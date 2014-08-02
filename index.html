@@ -1,17 +1,26 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <link rel='stylesheet' type='css' href='styles.css'> 
+    <link rel='stylesheet' type='css' href='styles.css'>
   </head>
   <body>
-    <div class="scoreboard">
+    <!-- <div class="scoreboard"> -->
       <!-- Modify the scoreboard when important events occur in your game! -->
-      <div class="high">High score: <span>0</span></div>
-      <div class="current">Current score: <span>0</span></div>
-      <div class="collisions">Collisions: <span>0</span></div>
-    </div>
-    <script src="d3.js" charset="utf-8"></script>
+      <!-- <div class="high">High score: <span>0</span></div> -->
+      <!-- <div class="current">Current score: <span>0</span></div> -->
+      <!-- <div class="collisions">Collisions: <span>0</span></div> -->
+    <!-- </div> -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.5.2/underscore-min.js"></script>
+   <script src="d3.js" charset="utf-8"></script>
     <script src='vid.js'></script>
-    <script src='watchout.js'></script>
+      <div class='container'>
+          <h1>Collider</h1>
+          <h3>Don't get hit!</h3>
+          <div id='scores'>
+            <h3>High Score: <span id='best-score'></h3>
+            <h3>Current Score: <span id='current-score'></h3>
+          </div>
+      </div>
   </body>
+  <script src='watchout.js'></script>
 </html>
