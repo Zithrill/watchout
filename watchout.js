@@ -2,9 +2,9 @@
 (function(){// start slingin' some d3 here.
 var gameOptions = {
   height : 450,
-  width : 700,
+  width : 1200,
   nEnemies : 30,
-  padding : 20
+  padding : 35
 };
 
 var gameStats = {
