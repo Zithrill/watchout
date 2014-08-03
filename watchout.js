@@ -1,5 +1,5 @@
 
-(function(){// start slingin' some d3 here.
+
 var gameOptions = {
   height : 450,
   width : 1200,
@@ -16,7 +16,7 @@ var axes = {
   x : d3.scale.linear().domain([0,100]).range([0,gameOptions.width]),
   y : d3.scale.linear().domain([0,100]).range([0,gameOptions.height])
 }
-var gameBoard = d3.select(".container").append('svg')
+var gameBoard = d3.select(".container").select('svg')
                   .attr('width', gameOptions.width)
                   .attr('height', gameOptions.height)
 
@@ -43,9 +43,17 @@ var Player = function( gameOptions ) {
 }
 
 Player.prototype.render = function(to){
-  this.el = to.append('svg:path')
-              .attr('d', this.path)
-              .attr('fill', this.fill);
+  this.el = to.append("image")
+    .attr("xlink:href","4.gif")
+    .attr("width", 50)
+    .attr("height", 50)
+    .attr("overflow", "visible");
+
+
+  this.el.append('svg:path')
+         .attr('d', this.path)
+         .attr('fill', this.fill);
+
   this.transform( {
     x: this.gameOptions.width * 0.5,
     y: this.gameOptions.height * 0.5
@@ -94,7 +102,7 @@ Player.prototype.moveRelative = function(dx,dy){
   this.transform({
     x: this.getX()+dx,
     y: this.getY()+dy,
-    angle: 360 * (Math.atan2(dy,dx)/(Math.PI*2))
+    angle: 0
   });
 }
 
@@ -118,6 +126,7 @@ var createEnemies = function(){
   for(var i = 0; i < gameOptions.nEnemies; i++){
     enemies.push({id:i , x : Math.random() * 100, y : Math.random() * 100 });
   }
+
   return enemies;
 };
 
@@ -127,14 +136,19 @@ var render = function(enemy_data){
                           });
 //This is where we change the enemy look
   enemies.enter()
-        .append('svg:circle')
+        .append("circle")
+        .attr("xlink:href", "pokeball.gif")
+        .attr("position", "relitive")
+        .attr("width", 50 + "px")
+        .attr("height", 50 + "px")
         .attr('class', 'enemy')
         .attr('cx', function(enemy){return axes.x(enemy.x);})
         .attr('cy', function(enemy){return axes.y(enemy.y);})
-        .attr('r', 0);
+        .attr("fill", "red");
 
   enemies.exit()
          .remove();
+
 
   var checkCollision = function(enemy, collidedCallback){
     return _.each(players, function(player){
@@ -155,6 +169,7 @@ var render = function(enemy_data){
   };
 
   var tweenWithCollisionDetection = function(endData){
+    //debugger;
     var enemy = d3.select(this);
     var startPos = {
       x : parseFloat( enemy.attr('cx') ),
@@ -167,6 +182,7 @@ var render = function(enemy_data){
     };
 
     return function(t){
+      // debugger;
       checkCollision( enemy, onCollision );
       var enemyNextPos = {
         x : startPos.x + (endPos.x - startPos.x) * t,
@@ -178,10 +194,13 @@ var render = function(enemy_data){
   };
 
   enemies.transition()
-          .duration(500)
-          .attr('r', 10)
-         .transition()
+          .ease('poly(10)')
           .duration(2000)
+          .attr('r', function(d){ return Math.floor(Math.random() * 30) + 1})
+          .style('fill', function(d){
+              var colors = [ "red", "blue", "green", "yellow", "white", "purple" ];
+              return colors[ Math.floor(Math.random() * 6) ];
+          })
           .tween('custom', tweenWithCollisionDetection);
 
 };
@@ -205,7 +224,7 @@ var play = function() {
 play();
 
 
-}).call(this);
+
 
 
 
